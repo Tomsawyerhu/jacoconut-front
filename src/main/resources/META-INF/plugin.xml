@@ -1,0 +1,42 @@
+<idea-plugin>
+    <id>org.njuse.testPlugin</id>
+    <name>Jacoconut</name>
+    <version>1.0.0</version>
+    <vendor email="1095549886@qq.com" url="http://www.dystudio.com">dystudio</vendor>
+
+    <description><![CDATA[
+    jacoconut是一款java覆盖工具<br>
+    能够计算行覆盖率、分支覆盖率等指标<br>
+    帮助提高代码质量<br>
+    ]]></description>
+
+    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
+         on how to target different products -->
+    <depends>
+        com.intellij.modules.platform
+    </depends>
+    <depends>com.intellij.modules.java</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your service here -->
+        <toolWindow id="jacoconut"  icon="AllIcons.Actions.Colors" anchor="bottom" canCloseContents="false"
+                    factoryClass="wiget.JacoconutToolWindowFactory"/>
+        <!-- Service -->
+        <projectService serviceImplementation="service.impl.TestScanServiceImpl" serviceInterface="service.TestScanService"/>
+        <projectService serviceImplementation="service.impl.ProjectServiceImpl" serviceInterface="service.ProjectScanService"/>
+        <applicationService serviceImplementation="service.impl.DataService" serviceInterface="service.DataService"/>
+    </extensions>
+
+    <applicationListeners>
+        <listener class="listener.ProjectListener" topic="com.intellij.openapi.project.ProjectManagerListener"/>
+    </applicationListeners>
+
+    <!-- Short summary of new features and bugfixes in the latest plugin version.
+       Displayed on the Plugin Page and IDE Plugin Manager. Simple HTML elements can be included between <![CDATA[  ]]> tags. -->
+    <change-notes>Initial release of the plugin.</change-notes>
+
+    <actions>
+        <!-- Add your actions here -->
+
+    </actions>
+</idea-plugin>
