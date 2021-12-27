@@ -78,7 +78,7 @@ public class TestScanServiceImpl implements TestScanService {
             List<AnnotationExpr> annotationExprs=md.getAnnotations();
             boolean isTestClass=false;
             for(AnnotationExpr annotationExpr:annotationExprs){
-                if(annotationExpr.getName().toString().equals(org.junit.Test.class.getName())){
+                if(annotationExpr.getName().toString().equals(org.junit.Test.class.getName())||annotationExpr.getName().toString().equals("Test")){
                     isTestClass=true;
                     CodeLink.PROJECT_TEST_CASE_LINK.get().add(new TestCaseLinking(md.getNameAsString(),md.getRange().get(),new TestClassLinking(this.className,this.classPath)));
                 }

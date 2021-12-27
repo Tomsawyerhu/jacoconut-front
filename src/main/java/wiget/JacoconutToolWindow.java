@@ -169,7 +169,6 @@ public class JacoconutToolWindow {
                         that.codes.setText("");
                         int caretPosition=0;
                         try {
-                            char[] buffer=new char[1024];
                             if(node instanceof TestClassCell){
                                 reader=new BufferedReader(new FileReader(((TestClassCell) node).getClassPath()));
                             }else{
@@ -177,7 +176,7 @@ public class JacoconutToolWindow {
                             }
                             String line="";
                             int i=0;
-                            while(!(line = reader.readLine()).equals("")){
+                            while(null!=(line = reader.readLine())){
                                 that.codes.append(line+"\n");
                                 i+=1;
                                 if(node instanceof TestCaseCell&&i<((TestCaseCell) node).getEndLine()){
