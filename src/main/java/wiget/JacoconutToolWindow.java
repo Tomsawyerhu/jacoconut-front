@@ -26,7 +26,7 @@ public class JacoconutToolWindow {
     private JScrollPane treeScroll;
     private JPanel left;
     private JPanel right;
-    private CheckboxTree testcaseTree;
+    private CheckBoxTree testcaseTree;
     private JButton coverageButton;
     private JScrollPane codeArea;
     private JTextArea codes;
@@ -85,14 +85,7 @@ public class JacoconutToolWindow {
         }
         //fixme 拆分到service
 
-        this.testcaseTree=new CheckboxTree(root);
-        this.testcaseTree.setDropMode(DropMode.USE_SELECTION);
-        this.testcaseTree.getSelectionModel().setSelectionMode
-                (TreeSelectionModel.SINGLE_TREE_SELECTION);
-
-        //自定义节点绘制器
-        this.testcaseTree.setCellRenderer(new TreeCellRenderer());
-
+        this.testcaseTree=new CheckBoxTree(root);
     }
 
     /*

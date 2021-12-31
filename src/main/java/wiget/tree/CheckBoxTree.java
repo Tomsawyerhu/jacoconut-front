@@ -3,6 +3,7 @@ package wiget.tree;
 import javax.swing.*;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
@@ -11,18 +12,26 @@ import java.util.Objects;
  * 带复选框的JTree
  * 节点类型:TreeCell
  */
-public class CheckboxTree extends JTree {
-    public CheckboxTree(TreeNode root){
+public class CheckBoxTree extends JTree {
+    public CheckBoxTree(TreeNode root){
         super(root);
+        formalize();
         addListeners();
     }
 
-    public CheckboxTree(){
-        addListeners();
+    private CheckBoxTree(){}
+
+    private void formalize(){
+        this.setDropMode(DropMode.USE_SELECTION);
+        this.getSelectionModel().setSelectionMode
+                (TreeSelectionModel.SINGLE_TREE_SELECTION);
+
+        //自定义节点绘制器
+        this.setCellRenderer(new TreeCellRenderer());
     }
 
     private void addListeners(){
-        CheckboxTree that=this;
+        CheckBoxTree that=this;
         this.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 //右单击勾选
