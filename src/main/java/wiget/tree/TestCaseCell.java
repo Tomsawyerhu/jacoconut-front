@@ -1,8 +1,6 @@
 package wiget.tree;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
-public class TestCaseCell extends DefaultMutableTreeNode implements TreeCell {
+public class TestCaseCell extends TreeCell {
     private String name;
     private String classPath;
     private int startLine;

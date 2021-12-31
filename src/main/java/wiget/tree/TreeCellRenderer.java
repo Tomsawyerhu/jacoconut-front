@@ -6,7 +6,9 @@ import javax.swing.*;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.*;
 
-public class CellRenderer extends DefaultTreeCellRenderer {
+public class TreeCellRenderer extends DefaultTreeCellRenderer {
+    public TreeCellRenderer(){}
+
     @Override
     public Component getTreeCellRendererComponent(
             JTree tree,
@@ -27,7 +29,23 @@ public class CellRenderer extends DefaultTreeCellRenderer {
             label.setIcon(SDKIcons.Logo);
             //todo do nothing
         }
-        return label;
+
+        CheckBoxNodePanel checkBoxNodePanel=new CheckBoxNodePanel(label,new JCheckBox());
+        //添加文本
+        final String text =
+                tree.convertValueToText(value, selected, expanded, leaf, row, hasFocus);
+        checkBoxNodePanel.label.setText(text);
+
+        //是否选中
+        if(value instanceof TreeCell){
+            TreeCell node=(TreeCell)value;
+            checkBoxNodePanel.check.setEnabled(true);
+            checkBoxNodePanel.check.setSelected(node.isSelected);
+        }
+
+        checkBoxNodePanel.formalize();
+
+        return checkBoxNodePanel;
     }
 
     public static TestClassCell generateTestClassCell(String name){

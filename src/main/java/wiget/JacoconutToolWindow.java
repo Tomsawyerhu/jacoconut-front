@@ -1,15 +1,13 @@
 package wiget;
 
-import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBScrollPane;
 import storage.CodeLink;
 import storage.model.TestCaseLinking;
 import storage.model.TestClassLinking;
-import wiget.tree.CellRenderer;
-import wiget.tree.TestCaseCell;
-import wiget.tree.TestClassCell;
+import wiget.tree.*;
+import wiget.tree.TreeCellRenderer;
 
 import javax.swing.*;
 import javax.swing.tree.*;
@@ -17,7 +15,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -29,7 +26,7 @@ public class JacoconutToolWindow {
     private JScrollPane treeScroll;
     private JPanel left;
     private JPanel right;
-    private JTree testcaseTree;
+    private CheckboxTree testcaseTree;
     private JButton coverageButton;
     private JScrollPane codeArea;
     private JTextArea codes;
@@ -66,7 +63,7 @@ public class JacoconutToolWindow {
      */
     private void initialTestcaseTree(){
         //初始化根节点
-        DefaultMutableTreeNode root= new DefaultMutableTreeNode("testcase tree");
+       TestRootCell root= new TestRootCell("testcase tree");
         //填充用例
 //        for(int i=0;i<10;i+=1){
 //            TestClassCell testClassCell=CellRenderer.generateTestClassCell(i +".class");
@@ -88,11 +85,14 @@ public class JacoconutToolWindow {
         }
         //fixme 拆分到service
 
-        this.testcaseTree=new JTree(root);
+        this.testcaseTree=new CheckboxTree(root);
         this.testcaseTree.setDropMode(DropMode.USE_SELECTION);
+        this.testcaseTree.getSelectionModel().setSelectionMode
+                (TreeSelectionModel.SINGLE_TREE_SELECTION);
 
         //自定义节点绘制器
-        this.testcaseTree.setCellRenderer(new CellRenderer());
+        this.testcaseTree.setCellRenderer(new TreeCellRenderer());
+
     }
 
     /*
@@ -101,6 +101,7 @@ public class JacoconutToolWindow {
     private void initialTreeArea(){
         this.treeScroll =new JBScrollPane(this.testcaseTree,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         this.treeScroll.setBorder(BorderFactory.createLineBorder(JBColor.RED));
+
     }
 
     /*
@@ -154,11 +155,12 @@ public class JacoconutToolWindow {
     }
 
     private void addListeners(){
-        //添加double click listener
+        //添加mouse listener
         JacoconutToolWindow that=this;
         this.testcaseTree.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
+                //左双击跳转
+                if (e.getClickCount() == 2&&e.getButton()==MouseEvent.BUTTON1) {
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode)
                             that.testcaseTree.getLastSelectedPathComponent();
                     if (node == null) return;
@@ -190,6 +192,8 @@ public class JacoconutToolWindow {
                         that.codes.requestFocus();
                     }
                 }
+
+
             }
         });
     }
