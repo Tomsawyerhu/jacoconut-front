@@ -120,24 +120,27 @@ public class JacoconutToolWindow {
     private void initialLeft(){
         this.left=new JPanel();
         this.left.setBorder(BorderFactory.createLineBorder(JBColor.RED));
-        GridBagLayout gbl=new GridBagLayout();
-        GridBagConstraints gbc=new GridBagConstraints();
-        gbl.columnWeights=new double[]{0};
-        gbl.rowWeights=new double[]{0.9,0.1};
-
-        this.left.setLayout(gbl);
-
-        gbc.gridx=0;
-        gbc.gridy=0;
-        gbc.fill=GridBagConstraints.BOTH;
-        gbl.setConstraints(treeScroll,gbc);
-        this.left.add(treeScroll);
-
-        gbc.gridx=0;
-        gbc.gridy=1;
-        gbc.fill=GridBagConstraints.NONE;
-        gbl.setConstraints(coverageButton,gbc);
-        this.left.add(coverageButton);
+//        GridBagLayout gbl=new GridBagLayout();
+//        GridBagConstraints gbc=new GridBagConstraints();
+//        gbl.columnWeights=new double[]{0};
+//        gbl.rowWeights=new double[]{0.9,0.1};
+//
+//        this.left.setLayout(gbl);
+//
+//        gbc.gridx=0;
+//        gbc.gridy=0;
+//        gbc.fill=GridBagConstraints.BOTH;
+//        gbl.setConstraints(treeScroll,gbc);
+//        this.left.add(treeScroll);
+//
+//        gbc.gridx=0;
+//        gbc.gridy=1;
+//        gbc.fill=GridBagConstraints.NONE;
+//        gbl.setConstraints(coverageButton,gbc);
+//        this.left.add(coverageButton);
+        this.left.setLayout(new BorderLayout(0,5));
+        this.left.add(treeScroll,BorderLayout.CENTER);
+        this.left.add(coverageButton,BorderLayout.SOUTH);
     }
 
     private void initialRight(){
