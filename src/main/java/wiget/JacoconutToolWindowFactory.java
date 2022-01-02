@@ -9,6 +9,10 @@ import org.jetbrains.annotations.NotNull;
 import service.ProjectScanService;
 import service.TestScanService;
 import storage.ProjectParams;
+import wiget.hook.CalculateCoverageHook;
+import wiget.hook.ToolWindowHook;
+
+import java.util.Collections;
 
 public class JacoconutToolWindowFactory implements ToolWindowFactory {
     @Override
@@ -20,10 +24,9 @@ public class JacoconutToolWindowFactory implements ToolWindowFactory {
             ProjectParams.STATE.compareAndSet(-1,1);
         }
 
-        JacoconutToolWindow window=new JacoconutToolWindow(toolWindow);
+        JacoconutMainToolWindow window=new JacoconutMainToolWindow(toolWindow, Collections.singletonList(new CalculateCoverageHook(toolWindow)));
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
-        Content content = contentFactory.createContent(window.getContent(), "", false);
+        Content content = contentFactory.createContent(window.getContent(), "Main", false);
         toolWindow.getContentManager().addContent(content);
     }
-
 }

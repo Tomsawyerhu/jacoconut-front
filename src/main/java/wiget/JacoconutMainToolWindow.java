@@ -1,27 +1,33 @@
 package wiget;
 
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.components.JBScrollPane;
 import storage.CodeLink;
 import storage.model.TestCaseLinking;
 import storage.model.TestClassLinking;
+import wiget.hook.CalculateCoverageHook;
+import wiget.hook.ToolWindowHook;
 import wiget.tree.*;
-import wiget.tree.TreeCellRenderer;
 
 import javax.swing.*;
 import javax.swing.tree.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Plugin window
  */
-public class JacoconutToolWindow {
+public class JacoconutMainToolWindow {
     private JSplitPane toolWindowContent;
     private JScrollPane treeScroll;
     private JPanel left;
@@ -30,8 +36,14 @@ public class JacoconutToolWindow {
     private JButton coverageButton;
     private JScrollPane codeArea;
     private JTextArea codes;
+    private List<ToolWindowHook> hooks;
 
-    public JacoconutToolWindow(ToolWindow toolWindow){
+    public JacoconutMainToolWindow(ToolWindow toolWindow, List<ToolWindowHook> hooks){
+        this(toolWindow);
+        this.hooks=hooks;
+    }
+
+    public JacoconutMainToolWindow(ToolWindow toolWindow){
         initialTestcaseTree();
         initialTreeArea();
         initialButton();
@@ -152,7 +164,7 @@ public class JacoconutToolWindow {
 
     private void addListeners(){
         //添加mouse listener
-        JacoconutToolWindow that=this;
+        JacoconutMainToolWindow that=this;
         this.testcaseTree.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 //左双击跳转
@@ -188,9 +200,31 @@ public class JacoconutToolWindow {
                         that.codes.requestFocus();
                     }
                 }
+            }
+        });
 
+        //click coverage calculate button
+        this.coverageButton.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TreeCell root=that.testcaseTree.getRoot();
+                List<TreeCell> testcases= root.collect();
+                List<String> testcasePath=new ArrayList<>();
+                for(TreeCell cell:testcases){
+                    if(cell.isTestCase()){
+                        testcasePath.add(((TestCaseCell)cell).getClassPath().concat(File.separator).concat(((TestCaseCell)cell).getName()));
+                    }
+                }
+                //Messages.showInfoMessage(String.join("\n", testcasePath), "Testcases");
+                for(ToolWindowHook hook:hooks){
+                    if(hook instanceof CalculateCoverageHook){
+                        hook.recall();
+                    }
+                }
 
             }
         });
     }
+
+
 }

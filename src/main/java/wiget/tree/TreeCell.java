@@ -2,10 +2,12 @@ package wiget.tree;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
+import java.util.List;
 
 public abstract class TreeCell extends DefaultMutableTreeNode {
-    abstract boolean isTestClass();
-    abstract boolean isTestCase();
+    public abstract boolean isTestClass();
+    public abstract boolean isTestCase();
+    public abstract List<TreeCell> collect();
     protected TreeCell(String n){
         super(n);
         this.isSelected=false;

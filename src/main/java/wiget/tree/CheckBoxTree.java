@@ -13,13 +13,19 @@ import java.util.Objects;
  * 节点类型:TreeCell
  */
 public class CheckBoxTree extends JTree {
-    public CheckBoxTree(TreeNode root){
+    private TestRootCell root;
+    public CheckBoxTree(TestRootCell root){
         super(root);
+        this.root=root;
         formalize();
         addListeners();
     }
 
     private CheckBoxTree(){}
+
+    public TestRootCell getRoot() {
+        return root;
+    }
 
     private void formalize(){
         this.setDropMode(DropMode.USE_SELECTION);

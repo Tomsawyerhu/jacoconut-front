@@ -1,5 +1,8 @@
 package wiget.tree;
 
+import java.util.Collections;
+import java.util.List;
+
 public class TestCaseCell extends TreeCell {
     private String name;
     private String classPath;
@@ -76,6 +79,11 @@ public class TestCaseCell extends TreeCell {
 
     @Override
     public boolean isTestCase() {
-        return false;
+        return true;
+    }
+
+    @Override
+    public List<TreeCell> collect() {
+        return Collections.singletonList(this);
     }
 }
