@@ -1,7 +1,6 @@
 package wiget.tree;
 
 import javax.swing.*;
-import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.event.MouseAdapter;

@@ -12,6 +12,7 @@ import storage.CodeLink;
 import storage.ProjectParams;
 import storage.model.TestCaseLinking;
 import storage.model.TestClassLinking;
+import utils.OSAdapter;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,10 +33,7 @@ public class TestScanServiceImpl implements TestScanService {
         }
         for(String testRoot:testRoots){
             try {
-                String unifyRoot=testRoot;
-                if(OSInfo.getOSName().equals("Windows")){
-                    unifyRoot=unifyRoot.substring(7).replace("/","\\\\");
-                }
+                String unifyRoot= OSAdapter.formalizeFilePath(testRoot);
                 List<String> javaFiles=Files.walk(Paths.get(unifyRoot))
                         .filter(Files::isRegularFile)
                         .filter(path -> path.toString().endsWith(".java"))

@@ -218,10 +218,9 @@ public class JacoconutMainToolWindow {
                 //Messages.showInfoMessage(String.join("\n", testcasePath), "Testcases");
                 for(ToolWindowHook hook:hooks){
                     if(hook instanceof CalculateCoverageHook){
-                        hook.recall();
+                        hook.recall(testcasePath);
                     }
                 }
-
             }
         });
     }

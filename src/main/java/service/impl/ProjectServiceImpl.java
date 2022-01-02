@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 public class ProjectServiceImpl implements ProjectScanService {
     @Override
     public void scanProject(Project project) {
+        ProjectParams.PROJECT_ROOT.set(project.getBasePath());
         //get all modules
         Module[] modules= ModuleManager.getInstance(project).getModules();
         //per module
