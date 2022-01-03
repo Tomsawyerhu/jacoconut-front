@@ -1,6 +1,5 @@
 package wiget.hook;
 
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
@@ -14,6 +13,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import extern.api.JacoconutApi;
+import extern.api.LCType;
 import org.apache.maven.it.Verifier;
 import storage.ProjectParams;
 import utils.OSAdapter;
@@ -66,24 +67,26 @@ public class CalculateCoverageHook implements ToolWindowHook{
     }
 
     private void modifyClass(){
-        for(String s:ProjectParams.PROJECT_SOURCE_ROOT.get()){
-            String ss=OSAdapter.formalizeFilePath(s);
-            modifyClass(ss);
-        }
+        modifyClass(OSAdapter.formalizeFilePath(ProjectParams.PROJECT_ROOT.get())+"/target/classes");
     }
+
     private void modifyClass(String path){
         if(Files.isDirectory(Paths.get(path))){
             String[] files=new File(path).list();
             if(files!=null){
                 for(String f:files){
-                    modifyClass(path+File.separator+f);
+                    modifyClass(path+"/"+f);
                 }
             }
         }
         if(path.endsWith(".class")){
-            String className=path.replace(".class","");
+            //String className=path.replace(".class","").replace(OSAdapter.formalizeFilePath(ProjectParams.PROJECT_ROOT.get())+"/target/classes/","");
             //todo
-            //extern.api.JacoconutApi.lineCoverageProbe(className,path);
+            try {
+                JacoconutApi.lineCoverageProbe(path, LCType.BASIC_BLOCK_RECORD);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

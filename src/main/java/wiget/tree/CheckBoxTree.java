@@ -39,7 +39,6 @@ public class CheckBoxTree extends JTree {
         CheckBoxTree that=this;
         this.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                //右单击勾选
                 int row=that.getRowForLocation(e.getX(),e.getY());
                 if(row!=-1&&e.getButton()== MouseEvent.BUTTON3){
                     TreePath path = that.getPathForLocation(e.getX(), e.getY());
