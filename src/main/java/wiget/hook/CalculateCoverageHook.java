@@ -1,5 +1,6 @@
 package wiget.hook;
 
+import api.LCType;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
@@ -13,8 +14,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import extern.api.JacoconutApi;
-import extern.api.LCType;
 import org.apache.maven.it.Verifier;
 import storage.ProjectParams;
 import utils.OSAdapter;
@@ -80,10 +79,9 @@ public class CalculateCoverageHook implements ToolWindowHook{
             }
         }
         if(path.endsWith(".class")){
-            //String className=path.replace(".class","").replace(OSAdapter.formalizeFilePath(ProjectParams.PROJECT_ROOT.get())+"/target/classes/","");
             //todo
             try {
-                JacoconutApi.lineCoverageProbe(path, LCType.BASIC_BLOCK_RECORD);
+                api.JacoconutApi.lineCoverageProbe(path, LCType.BASIC_BLOCK_RECORD);
             } catch (IOException e) {
                 e.printStackTrace();
             }
