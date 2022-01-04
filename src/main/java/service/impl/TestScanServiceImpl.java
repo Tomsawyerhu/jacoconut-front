@@ -27,32 +27,29 @@ import java.util.stream.Collectors;
 public class TestScanServiceImpl implements TestScanService {
     @Override
     public void scanTests() {
-        List<String> testRoots= ProjectParams.TEST_SOURCE_ROOT.get();
-        if(testRoots.isEmpty()){
+        String testRoot= ProjectParams.TEST_SOURCE_ROOT.get();
+        if(testRoot==null){
             return;
         }
-        for(String testRoot:testRoots){
-            try {
-                String unifyRoot= OSAdapter.formalizeFilePath(testRoot);
-                List<String> javaFiles=Files.walk(Paths.get(unifyRoot))
-                        .filter(Files::isRegularFile)
-                        .filter(path -> path.toString().endsWith(".java"))
-                        .map(Path::toAbsolutePath)
-                        .map(Path::toString)
-                        .collect(Collectors.toList());
-                for(String classFile:javaFiles){
-                    List<String> className = new ArrayList<>();
-                    // Create Compilation.
-                    CompilationUnit cu = StaticJavaParser.parse(new File(classFile));
-                    // Create Visitor.
-                    VoidVisitor<List<String>> classNameVisitor = new ClassNameCollector();
-                    // Visit.
-                    classNameVisitor.visit(cu,className);
-                    cu.accept(new MethodAnnotationCollector(className.get(0), classFile),null);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+        try {
+            List<String> javaFiles=Files.walk(Paths.get(testRoot))
+                    .filter(Files::isRegularFile)
+                    .filter(path -> path.toString().endsWith(".java"))
+                    .map(Path::toAbsolutePath)
+                    .map(Path::toString)
+                    .collect(Collectors.toList());
+            for(String classFile:javaFiles){
+                List<String> className = new ArrayList<>();
+                // Create Compilation.
+                CompilationUnit cu = StaticJavaParser.parse(new File(classFile));
+                // Create Visitor.
+                VoidVisitor<List<String>> classNameVisitor = new ClassNameCollector();
+                // Visit.
+                classNameVisitor.visit(cu,className);
+                cu.accept(new MethodAnnotationCollector(className.get(0), classFile),null);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }

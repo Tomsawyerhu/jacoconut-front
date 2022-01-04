@@ -16,7 +16,6 @@ import java.util.Map;
 
 import org.apache.maven.it.Verifier;
 import storage.ProjectParams;
-import utils.OSAdapter;
 
 /**
  * 加强MainToolWindow功能
@@ -53,7 +52,7 @@ public class CalculateCoverageHook implements ToolWindowHook{
      * todo gradle/ant
      */
     private void buildProject(){
-        String s= OSAdapter.formalizeFilePath(ProjectParams.PROJECT_ROOT.get());
+        String s= ProjectParams.PROJECT_ROOT.get();
         Map<String,String> env=new HashMap<>();
         env.put("maven.multiModuleProjectDirectory", s);
 
@@ -66,7 +65,7 @@ public class CalculateCoverageHook implements ToolWindowHook{
     }
 
     private void modifyClass(){
-        modifyClass(OSAdapter.formalizeFilePath(ProjectParams.PROJECT_ROOT.get())+"/target/classes");
+        modifyClass(ProjectParams.PROJECT_ROOT.get()+"/target/classes");
     }
 
     private void modifyClass(String path){
