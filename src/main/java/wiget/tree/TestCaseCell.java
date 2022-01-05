@@ -1,5 +1,6 @@
 package wiget.tree;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -84,6 +85,7 @@ public class TestCaseCell extends TreeCell {
 
     @Override
     public List<TreeCell> collect() {
-        return Collections.singletonList(this);
+        if(this.isSelected)return Collections.singletonList(this);
+        else return Collections.emptyList();
     }
 }

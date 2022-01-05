@@ -1,5 +1,6 @@
 package wiget;
 
+import api.JacoconutApi;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.JBColor;
@@ -7,6 +8,7 @@ import com.intellij.ui.components.JBScrollPane;
 import storage.CodeLink;
 import storage.model.TestCaseLinking;
 import storage.model.TestClassLinking;
+import utils.OSAdapter;
 import wiget.hook.CalculateCoverageHook;
 import wiget.hook.ToolWindowHook;
 import wiget.tree.*;
@@ -22,6 +24,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -207,18 +210,20 @@ public class JacoconutMainToolWindow {
         this.coverageButton.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //clean last result
+                JacoconutApi.reset();
                 TreeCell root=that.testcaseTree.getRoot();
                 List<TreeCell> testcases= root.collect();
                 List<String> testcasePath=new ArrayList<>();
                 for(TreeCell cell:testcases){
                     if(cell.isTestCase()){
-                        testcasePath.add(((TestCaseCell)cell).getClassPath().concat(File.separator).concat(((TestCaseCell)cell).getName()));
+                        testcasePath.add((OSAdapter.formalizeFilePath(((TestCaseCell)cell).getClassPath()).concat("/").concat(((TestCaseCell)cell).getName())));
                     }
                 }
                 //Messages.showInfoMessage(String.join("\n", testcasePath), "Testcases");
                 for(ToolWindowHook hook:hooks){
                     if(hook instanceof CalculateCoverageHook){
-                        hook.recall(testcasePath);
+                        hook.recall(testcasePath.toArray());
                     }
                 }
             }
