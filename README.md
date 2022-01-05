@@ -2,7 +2,7 @@
 Jacoconut's frontend，gradle-built intellij plugin，written in Swing &amp; Java.
 
 ![](./public/logo2.png)
-***
+## User Guide
 
 1. Navigate Routines(View|Tool Windows|Jacoconut)
 
@@ -27,3 +27,9 @@ Jacoconut's frontend，gradle-built intellij plugin，written in Swing &amp; Jav
 6. 查看测试报告
 
 ![](./public/coverage2.png)
+
+## Feature
+- 测试用例检索
+- 代码跳转
+- 覆盖率
+  - 行覆盖率
