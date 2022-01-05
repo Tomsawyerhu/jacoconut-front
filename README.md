@@ -19,3 +19,11 @@ Jacoconut's frontend，gradle-built intellij plugin，written in Swing &amp; Jav
 4. 右击选中testcase集合
 
 ![](./public/checkbox.png)
+
+5. 点击计算覆盖率(源项目经过编译、字节码加强、测试用例执行、数据收集四个阶段)
+
+![](./public/coverage1.png)
+
+6. 查看测试报告
+
+![](./public/coverage2.png)
